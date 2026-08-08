@@ -16,7 +16,7 @@ raw = context.wrap_socket(client, server_hostname=HOST)
 raw.connect((HOST, PORT))
 while True:
     try:
-        message = input("Du: ")
+        message = input("You: ")
         if not message:
             continue
         data = {
