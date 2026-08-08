@@ -1,6 +1,4 @@
-#Keys blockieren
 .env
-# Zertifikate blockieren
 *.key
 *.crt
 __pycache__/
