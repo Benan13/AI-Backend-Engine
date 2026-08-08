@@ -1,0 +1,9 @@
+#Keys blockieren
+.env
+# Zertifikate blockieren
+*.key
+*.crt
+__pycache__/
+*.pyc 
+.DS_Store
+Thumbs.db
