@@ -1,10 +1,16 @@
 import ollama
 import time
-def sprachmodell(frage):
+def sprachmodell(question, type):
     try:
+        if type == "chat":
+            system_prompt = "You are polite and answer the questions."
+        elif type == "summary":
+            system_prompt="Summarize the text in bullet points."
+        elif type=="translate":
+            system_prompt = "Translate the desired text into the desired language."
         stream = ollama.chat(model='qwen2.5:0.5b', messages=[
-            {'role': 'system', 'content': 'Du bist nett und höflich.'},
-            {'role': 'user','content': frage},
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user','content': question},
             ],
             stream=True
             )
