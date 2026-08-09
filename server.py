@@ -42,6 +42,7 @@ def client_handle(client, address):
         except Exception as e:
             error(f"Error handling connection with {address}: {e}")
             break
+    log(f"Server turned off Connection succesfully: {address}")
     client.close()
 
 while True:
