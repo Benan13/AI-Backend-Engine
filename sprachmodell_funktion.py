@@ -1,6 +1,6 @@
 import ollama
 import time
-def sprachmodell(question, type):
+def sprachmodell(question, type);
     try:
         if type == "chat":
             system_prompt = "You are polite and answer the questions."
