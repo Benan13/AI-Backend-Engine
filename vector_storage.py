@@ -13,7 +13,7 @@ class VectorStorage:
         self.collection = self.chroma_client.get_or_create_collection(name="pdf_dokumente")
         self.model = SentenceTransformer(
             "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-            token="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"
+            token=HU_KEY
         )
     def add_chunks(self, chunks: list[str]):
         BATCH_SIZE = 5461
