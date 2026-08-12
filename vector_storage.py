@@ -10,10 +10,6 @@ class VectorStorage:
         self.folder_path = os.path.dirname(os.path.abspath(__file__))
         self.db_full_path = os.path.join(self.folder_path, self.db_name)
         self.chroma_client = chromadb.PersistentClient(path=self.db_full_path)
-        try:
-            self.chroma_client._delete(name="pdf_dokumente")
-        except:
-            pass
         self.collection = self.chroma_client.get_or_create_collection(name="pdf_dokumente")
         self.model = SentenceTransformer(
             "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
