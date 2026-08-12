@@ -1,15 +1,19 @@
 import socket
 import threading
 import ssl
-from sprachmodell_funktion import sprachmodell
+from pipeline import Pipeline
 import json
 from dotenv import load_dotenv
 import os
 from serverlog import log, error, warn
+import pipeline
+import sys
+sys.dont_write_bytecode = True
 load_dotenv()
 MY_KEY=os.getenv("SERVER_API_KEY")
 HOST="127.0.0.1"
 PORT=39582
+pipeline = Pipeline()
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain(certfile="server.crt", keyfile="server.key")
 server= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,8 +39,8 @@ def client_handle(client, address):
                 return
             if not data.get("message"):
                 break
-            for stuck in sprachmodell(data.get("message")):
-                client.send(stuck.encode('utf-8'))
+            for part in pipeline.ask_database(data.get("message")):
+                client.send(part.encode('utf-8'))
             client.send(b'\x00')
             log(f"Streamed response succesfully transmitted to {address}.")
         except Exception as e:
@@ -53,4 +57,3 @@ while True:
         threading.Thread(target=client_handle, args=(secure_client, address), daemon=True).start()
     except Exception as e:
         error(f"SSL handshake failed with {address}: {e}")
-
