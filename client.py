@@ -20,6 +20,7 @@ while True:
         if not message:
             continue
         data = {
+            "type": "chat",
             "my_api": server_api,
             "message": message
         }
