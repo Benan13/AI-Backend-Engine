@@ -1,8 +1,9 @@
 import ollama
+from serverlog import error
 class Ask_Llm:
     def ask(self, question: str, type: str, context: str):
         try:
-            system_prompt = f'Du bist nett und höflich und atwortest du mithilfe des kontexts: {context}'
+            system_prompt = f'You are polite.'
             if type == "chat":
                 system_prompt = f"You are polite and answer the questions. You answer with the context: {context}"
             elif type == "summary":
@@ -19,4 +20,4 @@ class Ask_Llm:
             for chunk in stream:
                 yield chunk['message']['content']
         except Exception as e:
-            yield f"ERROR: {e}"
+            error(e)
