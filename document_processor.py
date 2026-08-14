@@ -1,4 +1,4 @@
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 class DocumentProcessor:
@@ -17,7 +17,7 @@ class DocumentProcessor:
             for file in os.listdir(folder):
                 if file.endswith(".pdf"):
                     print(f"loading file: {file}")
-                    loader = PyPDFLoader(os.path.join(folder, file))
+                    loader = PyMuPDFLoader(os.path.join(folder, file))
                     for doc in loader.load():
                         documents_list += doc.page_content + "\n"
         else:
