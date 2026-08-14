@@ -1,19 +1,19 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
 import os
-from dotenv import load_dotenv
+import dotenv
 class VectorStorage:
     def __init__(self, db_name: str="vektor_db"):
-        load_dotenv()
-        HU_KEY = os.getenv("HUGGING_FACE_KEY")
         self.db_name = db_name
+        dotenv.load_dotenv()
+        self.HU_KEY=os.getenv("HUGGING_FACE_KEY")
         self.folder_path = os.path.dirname(os.path.abspath(__file__))
         self.db_full_path = os.path.join(self.folder_path, self.db_name)
         self.chroma_client = chromadb.PersistentClient(path=self.db_full_path)
-        self.collection = self.chroma_client.get_or_create_collection(name="pdf_dokumente")
+        self.collection = self.chroma_client.get_or_create_collection(name="pdf_documents")
         self.model = SentenceTransformer(
             "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-            token=HU_KEY
+            token=self.HU_KEY
         )
     def add_chunks(self, chunks: list[str]):
         BATCH_SIZE = 5461
@@ -26,14 +26,15 @@ class VectorStorage:
                 documents=chunks[i : i + BATCH_SIZE],
                 ids=ids[i : i + BATCH_SIZE]
         )
-        print("Daten erfolgreich eingetragen.")
+        print("Datas are succesfully now in DataBase.")
     def search(self, query_text: str, n_results)-> list[str]:
         results = self.collection.query(
             query_texts=[query_text],
             n_results=n_results
         )
         documents = results.get("documents", [[]])
-        if documents:
+        if documents and documents[0]:
             return documents[0]
+        return []
 if __name__ == "main":
     vector = VectorStorage()
